@@ -11,12 +11,15 @@ import {
 import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createRoot } from 'react-dom/client';
+// import { Counter } from './components/counter';
+import Counter from './components/counter';
+import Controls from './components/controls';
 
 const About = (props) => {
   return <div> All there is to know about me </div>;
 };
 const Welcome = (props) => {
-  return <div>Welcome</div>;
+  return <div> <Counter /> <Controls /> Welcome</div>;
 };
 
 const FallBack = (props) => {
