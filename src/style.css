@@ -1,0 +1,166 @@
+
+/* Dropdown menu container */
+.react-select__menu {
+  word-break: break-word;
+  white-space: normal;
+  max-width: 320px;
+  font-size: 16px;
+  padding: 4px 0;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Selected value inside dropdown */
+.react-select__single-value {
+  word-break: break-word;
+  white-space: normal;
+  color: #111827;
+  font-weight: 500;
+}
+
+/* Main dropdown input styling */
+.react-select__control {
+  white-space: normal;
+  height: 180px;
+  font-size: 30px;
+  border-radius: 8px;
+  border: 2px double #4f6fa6;
+  background-color: #eceff27e;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+}
+
+/* Hover effect for dropdown input */
+.react-select__control:hover {
+  border-color: #6d98e7;
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.2);
+}
+
+/* Hover effect for dropdown options */
+.react-select__option:hover {
+  background-color: #f3f4f6;
+}
+
+/* Positioning container for floating button group */
+.button-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+  gap: 10px;
+}
+
+/* Base button styles */
+.button {
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
+}
+
+/* Default button appearance */
+.button-default {
+  background-color: #b0c3db;
+  color: white;
+}
+
+/* Hover effect for default button */
+.button-default:hover {
+  background-color: #133560;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Button to switch to therapist view */
+.button-client {
+  background-color: #5279ab;
+  color: white;
+}
+
+/* Hover effect for therapist switch button */
+.button-client:hover {
+  background-color: #182c47;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Button to switch to client view */
+.button-therapist {
+  background-color: #4c78af;
+  color: white;
+}
+
+/* Hover effect for client switch button */
+.button-therapist:hover {
+  background-color: #182c47;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Submit button styling */
+.button-submit {
+  background-color: #397726;
+  color: white;
+  margin: 10px;
+}
+
+/* Hover effect for submit button */
+.button-submit:hover {
+  background-color: #1e3d14;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Feedback message after submission */
+.success-message {
+  margin-top: 15px;
+  margin-right: 0px;
+  padding: 15px;
+  background-color: #e0f7fa;
+  color: #00796b;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Wrapper for the diagram layout */
+.diagram-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+/* Main title for the diagram section */
+.diagram-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #000000;
+}
+
+/* Subtitle below the diagram title */
+.diagram-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #374151;
+  margin-bottom: 15px;
+}
+
+/* Container for React Flow diagram */
+.reactflow-container {
+  width: 100vw;
+  height: calc(100vh - 120px);
+}
+
+/* Centered body text */
+.text {
+  text-align: center;
+  margin-top: 20px;
+}
