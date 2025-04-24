@@ -29,18 +29,83 @@ function FlowDiagram({ userRole = 'client' }) {
   };
 
   const handleDropdownChange = (id, value) => {
-    setNodes((nds) => nds.map((node) => (node.id === id ? { ...node, data: { ...node.data, value } } : node)));
+    setNodes((nds) => nds.map((node) => (node.id === id
+      ? {
+        ...node,
+        data: {
+          ...node.data,
+          value,
+          updated: Date.now(),
+        },
+      }
+      : node)));
   };
 
   const handleSubmit = async () => {
     const selected = {};
+    let allFilled = true;
+
     nodes.forEach((node) => {
-      selected[node.id] = node.data.value;
+      const { value } = node.data;
+      selected[node.id] = value;
+      if (!value || value.trim() === '') {
+        allFilled = false;
+      }
     });
 
+    if (userRole === 'client' || userRole === 'therapist') {
+      if (!allFilled) {
+        setResult('Please select an option for every dropdown before submitting.');
+        return;
+      }
+    }
+
+    console.log('Selected data being submitted:', selected);
+
+    const isSearchMode = userRole === 'clientFull';
+
     try {
-      const res = await submitInputData(selected);
-      setResult(res.result);
+      // Make the request to the backend to submit data and get matching results
+      const res = await submitInputData({
+        responses: selected,
+        role: userRole,
+      }, isSearchMode);
+
+      const responseValues = res.result || {};
+
+      if (!responseValues || Object.keys(responseValues).length === 0) {
+        setResult('Found nothing in the database.');
+        return;
+      }
+
+      // Update nodes with returned values from the backend (populate matched fields)
+      setNodes((prevNodes) => prevNodes.map((node) => {
+        // Check if the backend has a value for this node id
+        const newValue = responseValues[node.id];
+
+        if (newValue !== undefined) {
+          // If a value is returned from the backend, update the node
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              value: newValue,
+              updated: Date.now(),
+              wasAutoFilled: node.data.isReadOnly,
+            },
+          };
+        }
+
+        return node;
+      }));
+
+      if (userRole === 'clientFull') {
+        setResult('Results Found!');
+      } else {
+        setResult('Data recieved, thank you!');
+      }
+
+      console.log('Backend response:', responseValues);
     } catch (error) {
       console.error('Error submitting:', error);
       setResult('An error occurred. Please try again.');
@@ -49,28 +114,47 @@ function FlowDiagram({ userRole = 'client' }) {
 
   useEffect(() => {
     const loadInputs = async () => {
-      const inputNodes = userRole === 'therapist'
-        ? await getTherapistInputs()
-        : await getClientInputs();
+      let allInputs = [];
 
-      console.log('Fetched inputs:', inputNodes);
+      if (userRole === 'therapist') {
+        allInputs = await getTherapistInputs();
+      } else if (userRole === 'clientFull') {
+        allInputs = await getTherapistInputs();
+      } else {
+        allInputs = await getClientInputs();
+      }
 
-      // Create nodes for each input item
-      const nodeList = inputNodes.map((item, idx) => ({
-        id: item.name,
-        type: 'dropdown',
-        position: positionMap[item.name] || { x: Math.random() * 1000, y: Math.random() * 1000 }, // Random fallback
-        data: {
-          label: item.label,
-          factors: item.factors,
-          value: '',
-          onChange: handleDropdownChange,
+      const clientEditableSet = new Set([
+        'treatment',
+        'mediators',
+        'extratheraputic factors',
+        'clinical outcome in patient',
+      ]);
+
+      const nodeList = allInputs.map((item) => {
+        const isEditable = userRole === 'therapist'
+          || (userRole === 'clientFull' && clientEditableSet.has(item.name))
+          || (userRole === 'client');
+
+        return {
           id: item.name,
-        },
-      }));
+          type: 'dropdown',
+          position: positionMap[item.name] || {
+            x: Math.random() * 1000,
+            y: Math.random() * 1000,
+          },
+          data: {
+            label: item.label,
+            factors: item.factors,
+            value: '',
+            onChange: isEditable ? handleDropdownChange : null,
+            id: item.name,
+            isReadOnly: !isEditable,
+          },
+        };
+      });
 
-      // Create edges based on dependsOn relationships
-      const edgeList = inputNodes
+      const edgeList = allInputs
         .filter((n) => n.dependsOn && n.dependsOn.length > 0)
         .flatMap((n) => n.dependsOn.map((dependency) => ({
           id: `${dependency}-${n.name}`,
@@ -96,10 +180,6 @@ function FlowDiagram({ userRole = 'client' }) {
 
   return (
     <div style={{ height: '100vh', width: '100%' }} className="diagram-wrapper">
-      <div className="text">
-        <h1 className="diagram-title">Placeholder Title</h1>
-        <h2 className="diagram-subtitle">Click the dropdowns and select to recieve a diagnosis</h2>
-      </div>
       <div className="reactflow-container">
         <ReactFlow
           nodes={nodes}
@@ -122,23 +202,46 @@ function FlowDiagram({ userRole = 'client' }) {
           }}
         />
 
+        {userRole !== 'clientFull' && (
+        <div style={{
+          position: 'absolute', top: 20, left: 10, zIndex: 10,
+        }}
+        >
+          <button
+            className="button button-search"
+            onClick={() => navigate('/')}
+          >
+            Go to Search
+          </button>
+        </div>
+        )}
+
         <div className="button-container">
+          {userRole === 'clientFull' && (
+          <button
+            className="button button-client"
+            onClick={() => navigate('/client')}
+          >
+            Input Data
+          </button>
+          )}
+
           {userRole === 'client' && (
-            <button
-              className="button button-client"
-              onClick={() => navigate('/therapist')}
-            >
-              Go to Therapist View
-            </button>
+          <button
+            className="button button-client"
+            onClick={() => navigate('/therapist')}
+          >
+            Go to Therapist View
+          </button>
           )}
 
           {userRole === 'therapist' && (
-            <button
-              className="button button-therapist"
-              onClick={() => navigate('/')}
-            >
-              Go to Client View
-            </button>
+          <button
+            className="button button-therapist"
+            onClick={() => navigate('/')}
+          >
+            Go to Client View
+          </button>
           )}
 
           <button
@@ -149,9 +252,9 @@ function FlowDiagram({ userRole = 'client' }) {
           </button>
 
           {result && (
-            <div className="success-message">
-              {result}
-            </div>
+          <div className="success-message">
+            {result}
+          </div>
           )}
         </div>
       </div>

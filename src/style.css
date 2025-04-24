@@ -21,7 +21,7 @@
 /* Main dropdown input styling */
 .react-select__control {
   white-space: normal;
-  height: 180px;
+  height: 140px;
   font-size: 30px;
   border-radius: 8px;
   border: 2px double #4f6fa6;
@@ -76,28 +76,35 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Button to switch to therapist view */
+
 .button-client {
-  background-color: #5279ab;
-  color: white;
+  background-color: transparent; /* Use transparent instead of 'none' */
+  color: black; /* Set text color */
+  border: 2px solid black; /* Border to mimic stroke */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
 }
+
 
 /* Hover effect for therapist switch button */
 .button-client:hover {
-  background-color: #182c47;
+  background-color: #7e7f81;
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Button to switch to client view */
 .button-therapist {
-  background-color: #4c78af;
-  color: white;
+  background-color: transparent; /* Use transparent instead of 'none' */
+  color: black; /* Set text color */
+  border: 2px solid black; /* Border to mimic stroke */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* Hover effect for client switch button */
 .button-therapist:hover {
-  background-color: #182c47;
+  background-color: #7e7f81;
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -150,17 +157,76 @@
   font-size: 1.25rem;
   font-weight: 400;
   color: #374151;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 
 /* Container for React Flow diagram */
 .reactflow-container {
   width: 100vw;
   height: calc(100vh - 120px);
+  top: -50px;
+  margin-bottom: 30px;
 }
+ /* .reactflow-container {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+} */
 
 /* Centered body text */
 .text {
   text-align: center;
   margin-top: 20px;
+}
+
+/* Base */
+.custom-select-wrapper {
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+/* Read-only (dimmed) */
+.custom-select-wrapper.readonly {
+  opacity: 0.5;
+  pointer-events: none;
+  background: grey;
+}
+
+/* Editable (normal) */
+.custom-select-wrapper.editable {
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* Hover for editable dropdowns */
+.custom-select-wrapper.editable:hover {
+  box-shadow: 0 0 10px rgba(0, 128, 255, 0.5);
+  transform: scale(1.02);
+  border: 1px solid rgba(0, 128, 255, 0.5);
+}
+
+
+.custom-select-wrapper.autofilled {
+  opacity: 1 !important;
+  background-color: #96bdcd; 
+  border: 1px solid #6fadcf;
+  color: red;
+  /* box-shadow: 0 0 5px rgba(111, 207, 151, 0.6); */
+}
+
+.button-search {
+  margin-right: 100px;
+  cursor: pointer;
+}
+
+.text {
+  margin-top: 50px;
+}
+
+.dropdown-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #444;
 }
