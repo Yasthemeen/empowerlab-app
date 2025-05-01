@@ -126,7 +126,7 @@ function FlowDiagram({ userRole = 'client' }) {
 
       const clientEditableSet = new Set([
         'treatment',
-        'mediators',
+        'moderators',
         'extratheraputic factors',
         'clinical outcome in patient',
       ]);
