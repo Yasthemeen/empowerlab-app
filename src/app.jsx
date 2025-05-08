@@ -1,64 +1,46 @@
-import React from 'react';
-import { Route, Routes } from 'react-router';
-import ClientGraph from './components/ClientGraph';
-import TherapistGraph from './components/TherapistGraph';
-import SearchGraph from './components/searchGraph';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Route, Routes, useLocation } from 'react-router';
+import FlowDiagram from './components/flowDiagram';
+import NodeFormPage from './components/nodeForm';
+import { RoleContext } from './components/roleContext';
+import { useInputStore } from './store/useInput';
+
+function getRoleFromPath(pathname) {
+  if (pathname.startsWith('/therapist')) return 'therapist';
+  if (pathname.startsWith('/search')) return 'clientFull';
+  return 'client';
+}
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<SearchGraph />} />
-      <Route path="/client" element={<ClientGraph />} />
-      <Route path="/therapist" element={<TherapistGraph />} />
-      {/* <Route path="/search" element={<SearchGraph />} /> */}
+  const [nodes, setNodes] = useState([]);
+  const [userRole, setUserRole] = useState('client');
+  const location = useLocation();
+  const resetInputs = useInputStore((state) => state.resetInputs);
+  const contextValue = useMemo(() => ({ userRole, setUserRole }), [userRole]);
 
-    </Routes>
+  useEffect(() => {
+    const isFormPage = location.pathname.startsWith('/form');
+    const newRole = getRoleFromPath(location.pathname);
+
+    // Only update role and reset inputs when switching views (not on form pages)
+    if (!isFormPage && newRole !== userRole) {
+      setUserRole(newRole);
+      resetInputs();
+      setNodes([]);
+    }
+  }, [location.pathname, userRole]);
+
+  return (
+    <RoleContext.Provider value={contextValue}>
+      <Routes>
+        <Route path="/" element={<FlowDiagram userRole="client" nodes={nodes} setNodes={setNodes} />} />
+        <Route path="/client" element={<FlowDiagram userRole="client" nodes={nodes} setNodes={setNodes} />} />
+        <Route path="/therapist" element={<FlowDiagram userRole="therapist" nodes={nodes} setNodes={setNodes} />} />
+        <Route path="/search" element={<FlowDiagram userRole="clientFull" nodes={nodes} setNodes={setNodes} />} />
+        <Route path="/form/:nodeId" element={<NodeFormPage allNodes={nodes} />} />
+      </Routes>
+    </RoleContext.Provider>
   );
 }
 
 export default App;
-
-// import React, { useEffect, useState } from 'react';
-// import { Route, Routes } from 'react-router';
-// import ClientGraph from './components/ClientGraph';
-// import TherapistGraph from './components/TherapistGraph';
-// import SearchGraph from './components/searchGraph';
-
-// function App() {
-//   const [scale, setScale] = useState(1);
-
-//   useEffect(() => {
-//     const handleResize = () => {
-//       const scaleX = window.innerWidth / 1920;
-//       const scaleY = window.innerHeight / 1080;
-//       const newScale = Math.min(scaleX, scaleY);
-//       setScale(newScale);
-//     };
-
-//     handleResize(); // set initial scale
-//     window.addEventListener('resize', handleResize);
-//     return () => window.removeEventListener('resize', handleResize);
-//   }, []);
-
-//   return (
-//     <div
-//       className="scaled-container"
-//       style={{
-//         transform: `scale(${scale})`,
-//         transformOrigin: 'top left',
-//         width: '1920px',
-//         height: '1080px',
-//         overflow: 'hidden',
-//         position: 'absolute',
-//       }}
-//     >
-//       <Routes>
-//         <Route path="/" element={<ClientGraph />} />
-//         <Route path="/therapist" element={<TherapistGraph />} />
-//         <Route path="/search" element={<SearchGraph />} />
-//       </Routes>
-//     </div>
-//   );
-// }
-
-// export default App;

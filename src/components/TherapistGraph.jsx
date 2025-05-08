@@ -8,7 +8,7 @@ function TherapistGraph() {
         <h1 className="diagram-title"> Therapist Input </h1>
         <h2 className="diagram-subtitle"> Add input to the database </h2>
       </div>
-      <FlowDiagram userRole="therapist" />
+      <FlowDiagram userRole="therapist" />;
     </>
   );
 }

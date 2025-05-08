@@ -1,4 +1,3 @@
-// src/components/ClientFullGraph.js
 import React from 'react';
 import FlowDiagram from './flowDiagram';
 
