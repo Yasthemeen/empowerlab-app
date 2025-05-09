@@ -21,7 +21,7 @@
 /* Main dropdown input styling */
 .react-select__control {
   white-space: normal;
-  height: 140px;
+  height: 50px;
   font-size: 30px;
   border-radius: 8px;
   border: 2px double #4f6fa6;
@@ -174,10 +174,10 @@
 } */
 
 /* Centered body text */
-.text {
+/* .text {
   text-align: center;
   margin-top: 20px;
-}
+} */
 
 /* Base */
 .custom-select-wrapper {
@@ -202,7 +202,7 @@
 .custom-select-wrapper.editable:hover {
   box-shadow: 0 0 10px rgba(0, 128, 255, 0.5);
   transform: scale(1.02);
-  border: 1px solid rgba(0, 128, 255, 0.5);
+  border: 1px solid rgba(182, 190, 198, 0.5);
 }
 
 
@@ -219,9 +219,9 @@
   cursor: pointer;
 }
 
-.text {
+/* .text {
   margin-top: 50px;
-}
+} */
 
 .dropdown-label {
   display: block;
@@ -336,4 +336,384 @@
 .react-select__control--is-focused {
   border-color: #111827;
   box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.1);
+}
+
+.text {
+  padding: 20px;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+.diagram-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #000;
+}
+
+.diagram-subtitle {
+  font-size: 1.25rem;
+  color: #555;
+}
+
+
+.graph-container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+}
+
+.flow-wrapper {
+  flex: 1;
+  min-height: 0;
+}
+.diagram-wrapper {
+  flex: 1;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.diagram-header {
+  text-align: center;
+  margin: 1rem 0;
+  z-index: 2;
+}
+
+.diagram-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.diagram-subtitle {
+  font-size: 1.25rem;
+  color: #555;
+}
+
+/* make sure your wrapper is positioned relative so z-index works */
+.diagram-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.diagram-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;       /* full‐screen flow */
+  display: flex;
+  flex-direction: column;
+}
+
+.diagram-header {
+  flex: 0 0 auto;      /* do not stretch */
+  text-align: center;
+  padding: 1rem;
+  background: #fff;
+  z-index: 2;
+}
+
+.diagram-title {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.diagram-subtitle {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #555;
+}
+
+.loading-indicator {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* keep your React-Flow canvas from overlapping the header */
+.reactflow {
+  flex: 1 1 auto;
+  min-height: 0;      /* allows proper flex behavior */
+}
+
+
+/* Text input */
+input[type="text"] {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+/* Range slider */
+input[type="range"] {
+  width: 100%;
+  margin-top: 0.5rem;
+  accent-color: #4a90e2;
+}
+
+.form-page {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.form-header h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  color: #333;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.form-slider {
+  display: flex;
+  flex-direction: column;
+}
+
+.slider-input {
+  width: 100%;
+  margin-top: 0.5rem;
+  appearance: none;
+  height: 6px;
+  border-radius: 4px;
+  background: #ccc;
+  outline: none;
+  transition: background 0.3s ease;
+}
+
+.slider-input::-webkit-slider-thumb,
+.slider-input::-moz-range-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  padding: 0 4px;
+  color: #777;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+/* .form-buttons button {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.form-buttons button:hover {
+  background-color: #0056b3;
+} */
+
+
+
+
+.diagram-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+.diagram-header {
+  padding: 0;
+  margin: 0;
+}
+
+.diagram-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+.diagram-subtitle {
+  font-size: 1.25rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.react-flow {
+  top: -20px;
+  width: 100%;
+  height: 100vh;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.button-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  z-index: 100;
+}
+
+.button {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background-color: #4f46e5;
+  color: white;
+}
+
+.button:hover {
+  background-color: #3730a3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__node {
+  /* background-color: #f4f4f4; */
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+.button-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  z-index: 100;
+}
+
+/* Unified button appearance */
+.button {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background-color: #4f46e5;
+  color: white;
+}
+
+.button:hover {
+  background-color: #3730a3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Special button: submit */
+.button-submit {
+  background-color: #10b981;
+}
+
+.button-submit:hover {
+  background-color: #047857;
+}
+
+/* Clear button (icon only) */
+.button-container button:last-child {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  padding: 0;
+}
+
+.button-container button:last-child:hover {
+  color: #374151;
+  transform: rotate(20deg);
+}
+
+/* Feedback message */
+.success-message {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border-left: 6px solid #0ea5e9;
+  padding: 16px 20px;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+  max-width: 300px;
+  font-size: 0.95rem;
+}
+
+/* .react-flow__pane {
+  position: absolute; 
+  width: 100%; 
+  height: 100%; 
+  top: 5000px; 
+  left: 0px;
+} */
+
+.clear-button-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+}
+
+.button-clear {
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 20px;
+  background-color: #f3f4f6;
+  color: #111827;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-clear:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

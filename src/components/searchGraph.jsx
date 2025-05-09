@@ -1,16 +1,15 @@
-import React from 'react';
-import FlowDiagram from './flowDiagram';
+// /* eslint-disable react/button-has-type */
+// import React from 'react';
+// import FlowDiagram from './flowDiagram';
 
-function SearchGraph() {
-  return (
-    <>
-      <div className="text">
-        <h1 className="diagram-title"> Search </h1>
-        <h2 className="diagram-subtitle"> Click the dropdowns and select to recieve a diagnosis</h2>
-      </div>
-      <FlowDiagram userRole="clientFull" />
-    </>
-  );
-}
+// function SearchGraph() {
+//   return (
+//     <FlowDiagram
+//       userRole="clientFull"
+//       title="Search"
+//       subtitle="Click the dropdowns and select to receive a diagnosis"
+//     />
+//   );
+// }
 
-export default SearchGraph;
+// export default SearchGraph;

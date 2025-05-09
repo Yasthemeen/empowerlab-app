@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-multi-spaces */
 /* eslint-disable react/button-has-type */
 // /* eslint-disable import/no-extraneous-dependencies */
 // /* eslint-disable react/button-has-type */
@@ -6,7 +7,7 @@ import ReactFlow, { MarkerType, applyNodeChanges } from 'reactflow';
 import { useLocation, useNavigate } from 'react-router';
 import 'reactflow/dist/style.css';
 import { getClientInputs, getTherapistInputs, submitInputData } from '../api/api';
-import InputDropdown from './InputDropdown';
+import InputDropdown from './inputDropdown';
 import { useInputStore } from '../store/useInput';
 
 function FlowDiagram({ userRole = 'client', nodes, setNodes }) {
@@ -14,20 +15,53 @@ function FlowDiagram({ userRole = 'client', nodes, setNodes }) {
   const [edges, setEdges] = useState([]);
   const [result, setResult] = useState('');
   const navigate = useNavigate();
-  const { inputs, setInput } = useInputStore();
+  // const { inputs, setInput } = useInputStore();
   const [loading, setLoading] = useState(true);
   const location = useLocation();
-
+  const {
+    inputs, setInput, impacts, quantifiers,
+  } = useInputStore();
+  const navigateAndReload = (path) => {
+    navigate(path);
+    window.location.reload();
+  };
   const positionMap = {
-    'mechanisms of change': { x: 134.69, y: 633.08 },
-    'extratheraputic factors': { x: -573.73, y: 667.70 },
-    moderators: { x: -493.27, y: 187.95 },
-    'inactive components': { x: 935.26, y: 482.63 },
-    'clinical outcome in patient': { x: 139.72, y: 870.32 },
-    treatment: { x: 210.12, y: -140.17 },
-    'descriptive components': { x: 126.32, y: 115.48 },
-    mediators: { x: 905.17, y: 139.57 },
-    'active components': { x: 156.48, y: 380.61 },
+    'mechanisms of change': {
+      x: 154.69,
+      y: 279.05,
+    },
+    'extratheraputic factors': {
+      x: -589.67,
+      y: 384.41,
+    },
+    moderators: {
+      x: -318.05,
+      y: -73.09,
+    },
+    'inactive components': {
+      x: 927.26,
+      y: 361.81,
+    },
+    'clinical outcome in patient': {
+      x: 130.02,
+      y: 482.17,
+    },
+    treatment: {
+      x: 212.12,
+      y: -306.57,
+    },
+    'descriptive components': {
+      x: 150.32,
+      y: -115.97,
+    },
+    mediators: {
+      x: 706.2,
+      y: -67.94,
+    },
+    'active components': {
+      x: 174.48,
+      y: 58.04,
+    },
   };
 
   // All dropdown changes ALWAYS go through Zustand
@@ -40,31 +74,43 @@ function FlowDiagram({ userRole = 'client', nodes, setNodes }) {
 
   const handleSubmit = async () => {
     const selected = {};
+    const impactMap = {};
+    const quantifierMap = {};
     let allFilled = true;
+
     nodes.forEach((node) => {
       const { value } = node.data;
       selected[node.id] = value;
+      impactMap[node.id] = impacts[node.id] ?? 1;
+      quantifierMap[node.id] = quantifiers[node.id] ?? 1;
+
       if (!value || value.trim() === '') {
         allFilled = false;
       }
     });
+
     if ((userRole === 'client' || userRole === 'therapist') && !allFilled) {
       setResult('Please select an option for every dropdown before submitting.');
       return;
     }
+
     try {
       const res = await submitInputData(
         {
           responses: selected,
           role: userRole,
+          impacts: impactMap,
+          quantifiers: quantifierMap,
         },
         userRole === 'clientFull',
       );
+
       const responseValues = res.result || {};
       if (!responseValues || Object.keys(responseValues).length === 0) {
         setResult('Found nothing in the database.');
         return;
       }
+
       setNodes((prevNodes) => prevNodes.map((node) => {
         const newValue = responseValues[node.id];
         return newValue !== undefined
@@ -155,11 +201,31 @@ function FlowDiagram({ userRole = 'client', nodes, setNodes }) {
   }, [inputs]);
 
   return (
-    <div style={{ height: '100vh', width: '100%' }} className="diagram-wrapper">
+    <div className="diagram-wrapper">
       {loading ? (
         <div style={{ textAlign: 'center', marginTop: '3em' }}>Loading...</div>
       ) : (
         <>
+          <div className="text">
+            {userRole === 'clientFull' && (
+              <>
+                <h1 className="diagram-title"> Search Database</h1>
+                <h2 className="diagram-subtitle"> Fill in to recieve results </h2>
+              </>
+            )}
+            {userRole === 'client' && (
+            <>
+              <h1 className="diagram-title"> Client Input </h1>
+              <h2 className="diagram-subtitle"> Add Input to the database </h2>
+            </>
+            )}
+            {userRole === 'therapist' && (
+            <>
+              <h1 className="diagram-title"> Therapist Input </h1>
+              <h2 className="diagram-subtitle"> Add Input to the database </h2>
+            </>
+            )}
+          </div>
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -175,6 +241,19 @@ function FlowDiagram({ userRole = 'client', nodes, setNodes }) {
             onNodesChange={(changes) => {
               setNodes((nds) => applyNodeChanges(changes, nds));
             }}
+            // onNodesChange={(changes) => {
+            //   setNodes((nds) => {
+            //     const updated = applyNodeChanges(changes, nds);
+
+            //     const posMap = updated.reduce((acc, node) => {
+            //       acc[node.id] = { x: Number(node.position.x.toFixed(2)), y: Number(node.position.y.toFixed(2)) };
+            //       return acc;
+            //     }, {});
+            //     console.log('Updated positionMap:', JSON.stringify(posMap, null, 2));
+
+            //     return updated;
+            //   });
+            // }}
             onNodeClick={(_, node) => {
               if (node.data?.isReadOnly !== true) {
                 navigate(`/form/${node.id}`);
@@ -183,21 +262,47 @@ function FlowDiagram({ userRole = 'client', nodes, setNodes }) {
           />
           <div className="button-container">
             {userRole !== 'clientFull' && (
-              <button className="button" onClick={() => navigate('/')}>
-                Go to Search
-              </button>
+            <button
+              className="button"
+              onClick={() => navigateAndReload('/search')}
+            >
+              Go to Search
+            </button>
             )}
+
             {userRole === 'clientFull' && (
-              <button className="button" onClick={() => navigate('/client')}>Input Data</button>
+            <button
+              className="button"
+              onClick={() => navigateAndReload('/')}
+            >
+              Input Data
+            </button>
             )}
+
             {userRole === 'client' && (
-              <button className="button" onClick={() => navigate('/therapist')}>Go to Therapist View</button>
+            <button
+              className="button"
+              onClick={() => navigateAndReload('/therapist')}
+            >
+              Go to Therapist View
+            </button>
             )}
+
             {userRole === 'therapist' && (
-              <button className="button" onClick={() => navigate('/')}>Go to Client View</button>
+            <button
+              className="button"
+              onClick={() => navigateAndReload('/')}
+            >
+              Go to Client View
+            </button>
             )}
             <button className="button button-submit" onClick={handleSubmit}>Submit</button>
             {result && <div className="success-message">{result}</div>}
+          </div>
+          <div className="clear-button-container">
+            <button className="button button-clear" onClick={() => window.location.reload()}>
+              🔄 Clear
+            </button>
           </div>
         </>
       )}

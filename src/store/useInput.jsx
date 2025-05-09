@@ -3,8 +3,15 @@ import { create } from 'zustand';
 
 export const useInputStore = create((set) => ({
   inputs: {},
-  setInput: (key, value) => set((state) => ({
-    inputs: { ...state.inputs, [key]: value },
+  impacts: {},
+  quantifiers: {},
+  setInput: (id, value) => set((state) => ({
+    inputs: { ...state.inputs, [id]: value },
   })),
-  resetInputs: () => set({ inputs: {} }),
+  setImpacts: (id, text) => set((state) => ({
+    impacts: { ...state.impacts, [id]: text },
+  })),
+  setQuantifiers: (id, level) => set((state) => ({
+    quantifiers: { ...state.quantifiers, [id]: level },
+  })),
 }));

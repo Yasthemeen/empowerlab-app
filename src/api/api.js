@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_BASE = 'https://empowerlab-app-backend.onrender.com/api/inputs';
-// const API_BASE = 'http://localhost:9090/api/inputs';
+// const API_BASE = 'https://empowerlab-app-backend.onrender.com/api/inputs';
+const API_BASE = 'http://localhost:9090/api/inputs';
 
 export const getInputNodes = async () => {
   const res = await axios.get(`${API_BASE}`);
